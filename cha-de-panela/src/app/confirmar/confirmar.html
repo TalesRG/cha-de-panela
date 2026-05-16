@@ -1,0 +1,87 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="ornament">
+      <span class="line"></span>
+      <span>Arraiá da Ana &amp; Tales</span>
+      <span class="line"></span>
+    </div>
+    <h1>Confirmar Presença</h1>
+    <p class="subtitle">Conta pra gente se você vem — e se vai trazer alguém</p>
+  </header>
+
+  <div class="convidados-actions">
+    <a routerLink="/" class="back-link">
+      <svg class="ico"><use href="#i-arrow-left"/></svg> Voltar para o convite
+    </a>
+    <a routerLink="/convidados" class="back-link">
+      <svg class="ico"><use href="#i-users"/></svg> Ver convidados
+    </a>
+  </div>
+
+  <section class="panel active">
+    <form class="rsvp-form" (submit)="submitRsvp($event)">
+      <div class="field">
+        <label for="nome">Seu nome completo</label>
+        <input id="nome" type="text" required placeholder="ex: Maria da Silva" [(ngModel)]="form.nome" name="nome">
+      </div>
+
+      <div class="field">
+        <label>Você vai trazer acompanhante?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="acomp" value="nao" [(ngModel)]="form.acomp"> Vou sozinho(a)</label>
+          <label><input type="radio" name="acomp" value="sim" [(ngModel)]="form.acomp"> Sim, vou levar alguém</label>
+        </div>
+      </div>
+
+      <div class="companion-block" [class.show]="form.acomp === 'sim'">
+        <div class="field" style="margin-bottom:0">
+          <label for="acompNome">Nome do(a) acompanhante</label>
+          <input id="acompNome" type="text" placeholder="quem vem junto?" [(ngModel)]="form.acompNome" name="acompNome">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="presenteNome">Qual presente você vai levar?</label>
+        <div class="gift-info-field">
+          <p class="field-hint">Conte aqui pra ajudar a evitar repetições. Se preferir não falar (presente surpresa!), pode deixar em branco.</p>
+          <input id="presenteNome" type="text" placeholder="ex: jogo de panelas, liquidificador, contribuição via Pix..." [(ngModel)]="form.presenteNome" name="presenteNome">
+          <div class="store-radio-row">
+            <span class="store-radio-label">Comprado em:</span>
+            <label><input type="radio" name="loja" value="Havan" [(ngModel)]="form.loja"> Havan</label>
+            <label><input type="radio" name="loja" value="Amazon" [(ngModel)]="form.loja"> Amazon</label>
+            <label><input type="radio" name="loja" value="Pix" [(ngModel)]="form.loja"> Pix</label>
+            <label><input type="radio" name="loja" value="Outro" [(ngModel)]="form.loja"> Outro</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="recado">Recadinho para os noivos (opcional)</label>
+        <textarea id="recado" rows="3" placeholder="deixe uma mensagem carinhosa..." [(ngModel)]="form.recado" name="recado"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="submitting()">
+        <svg class="ico"><use href="#i-heart"/></svg>
+        {{ submitting() ? 'Enviando...' : 'Confirmar presença' }}
+      </button>
+    </form>
+  </section>
+
+  <footer class="page-footer">
+    <p>Feito com <svg class="ico heart"><use href="#i-heart"/></svg> de Ana &amp; Tales · 31.05.2026</p>
+  </footer>
+</div>
+
+<div class="toast" [class.show]="toastVisible()">
+  <svg class="ico"><use href="#i-check2"/></svg> <span>{{ toastMsg() }}</span>
+</div>

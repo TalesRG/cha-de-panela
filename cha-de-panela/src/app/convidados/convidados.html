@@ -1,0 +1,84 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="ornament">
+      <span class="line"></span>
+      <span>Arraiá da Ana &amp; Tales</span>
+      <span class="line"></span>
+    </div>
+    <h1>Convidados</h1>
+    <p class="subtitle">Quem já confirmou presença no nosso chá de panela</p>
+  </header>
+
+  <div class="convidados-actions">
+    <a routerLink="/" class="back-link">
+      <svg class="ico"><use href="#i-arrow-left"/></svg> Voltar para o convite
+    </a>
+    <button type="button" class="refresh-btn" (click)="reload()" [disabled]="loading()">
+      <svg class="ico"><use href="#i-refresh"/></svg> Atualizar
+    </button>
+  </div>
+
+  <section class="panel active">
+    <h2><svg class="ico"><use href="#i-users"/></svg> Lista de convidados</h2>
+
+    @if (!loading() && !error()) {
+      <p class="intro">
+        @if (rsvps().length === 0) {
+          Nenhuma confirmação ainda — seja o primeiro a confirmar!
+        } @else {
+          {{ rsvps().length }} {{ rsvps().length === 1 ? 'confirmação' : 'confirmações' }}
+          · {{ totalPessoas() }} {{ totalPessoas() === 1 ? 'pessoa' : 'pessoas' }} no total
+        }
+      </p>
+    }
+
+    <div class="confirmados" style="margin-top:24px;border-top:none;padding-top:0">
+      @if (loading()) {
+        <p class="intro">Carregando convidados...</p>
+      } @else if (error()) {
+        <p class="intro">Não foi possível carregar a lista. Tente novamente.</p>
+      } @else {
+        <ul>
+          @if (rsvps().length === 0) {
+            <li>ninguém ainda — seja o primeiro!</li>
+          } @else {
+            @for (r of rsvps(); track r.id ?? r.when) {
+              <li>
+                <strong>{{ r.nome }}</strong>
+                @if (r.acompanhante) {
+                  <svg class="ico" style="font-size:.75rem"><use href="#i-plus"/></svg>
+                  {{ r.acompanhante }}
+                }
+                @if (r.presente) {
+                  <span class="presente-tag">
+                    <svg class="ico" style="font-size:.7rem"><use href="#i-gift"/></svg>
+                    {{ r.presente }}@if (r.loja) { ({{ r.loja }})}
+                  </span>
+                }
+                @if (r.recado) {
+                  <div class="recado-text">"{{ r.recado }}"</div>
+                }
+              </li>
+            }
+          }
+        </ul>
+      }
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <p>Feito com <svg class="ico heart"><use href="#i-heart"/></svg> de Ana &amp; Tales · 31.05.2026</p>
+  </footer>
+</div>
